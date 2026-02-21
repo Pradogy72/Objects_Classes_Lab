@@ -3,4 +3,5 @@ project(BankAccount)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(BankAccount main.cpp)
+add_executable(BankAccount main.cpp
+)

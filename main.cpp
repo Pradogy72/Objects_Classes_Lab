@@ -10,8 +10,8 @@ using namespace std;
 class BankAccount {
     public:
         BankAccount();
-        BankAccount(string number, string name, double bal);
-        void SetName(string name);
+        BankAccount(const string& number, const string& name, double bal);
+        void SetName(const string& name);
         string GetNumber() const;
         string GetName() const;
         double GetBal() const;
@@ -28,12 +28,12 @@ BankAccount::BankAccount() {
     accountHolderName = "";
     balance = -1.0;
 }
-BankAccount::BankAccount(string number, string name, double bal) {
+BankAccount::BankAccount(const string& number, const string& name, double bal) {
     accountNumber = number;
     accountHolderName = name;
     balance = bal;
 }
-void BankAccount::SetName(string name) {
+void BankAccount::SetName(const string& name) {
     accountHolderName = name;
 }
 string BankAccount::GetNumber() const {
@@ -55,9 +55,6 @@ void BankAccount::withdraw(double amount) {
 int main() {
     vector<BankAccount> accounts;
     int choice;
-    string number;
-    string name;
-    double bal;
     do {
         cout << "Select an option: " << endl;
         cout << "1. Create Account" << endl;
@@ -74,6 +71,8 @@ int main() {
         }
         switch (choice) {
             case 1: {
+                string number;
+                string name;
                 cout << "1. Create Account: " << endl << "Enter account number: " << endl;
                 cin >> number;
                 cout << "1. Create Account: " << endl << "Account number: " << number << endl << "Enter account holder name: " << endl;
@@ -85,6 +84,8 @@ int main() {
                 break;
             }
             case 2: {
+                string number;
+                double bal;
                 int tempIndex;
                 int x = -1;
                 int y = 0;
@@ -92,11 +93,13 @@ int main() {
                 do {
                     cout << "2. Deposit: " << endl << "Enter account number: " << endl;
                     cin >> number;
+                    cin.clear();
+                    cin.ignore();
                     for (int i = 0; i < accounts.size(); i++) {
                         if (accounts.at(i).GetNumber() == number) {
-                            x = 1;
                             tempNum = accounts.at(i).GetNumber();
                             tempIndex = i;
+                            x = 1;
                             break;
                         }
                     }
@@ -105,9 +108,12 @@ int main() {
                     }
                 } while (x != 1);
                 while (y == 0) {
+
                     cout << "2. Deposit: " << endl << "Account number: " << tempNum << endl;
                     cout << "Enter deposit amount: " << endl;
                     cin >> bal;
+                    cin.clear();
+                    cin.ignore();
                     if (!cin.fail() && bal > 0) {
                         accounts.at(tempIndex).deposit(bal);
                         cout << "Deposit successful" << endl;
@@ -120,6 +126,8 @@ int main() {
                 break;
             }
             case 3: {
+                double bal;
+                string number;
                 int tempIndex;
                 int x = -1;
                 int y = 0;
@@ -127,6 +135,8 @@ int main() {
                 do {
                     cout << "3. Withdraw: " << endl << "Enter account number: " << endl;
                     cin >> number;
+                    cin.clear();
+                    cin.ignore();
                     for (int i = 0; i < accounts.size(); i++) {
                         if (accounts.at(i).GetNumber() == number) {
                             x = 1;
@@ -138,12 +148,14 @@ int main() {
                     if (x == -1) {
                         cout << "Account number not found, try again" << endl;
                     }
-                } while (x != 1);
+                } while (x == -1);
                 while (y == 0) {
                     cout << "3. Withdraw: " << endl << "Account number: " << tempNum << endl;
                     cout << "Enter withdraw amount: " << endl;
                     cin >> bal;
-                    if (!cin.fail() && (bal > 0 && bal <= accounts.at(tempIndex).GetBal())) {
+                    cin.clear();
+                    cin.ignore();
+                    if (((!cin.fail()) && (bal > 0)) && (bal <= accounts.at(tempIndex).GetBal())) {
                         accounts.at(tempIndex).withdraw(bal);
                         cout << "Withdraw of $" << bal <<" successful" << endl;
                         y = 1;
@@ -158,16 +170,17 @@ int main() {
                 break;
             }
             case 4: {
+                string number;
                 int x = -1;
-                string tempNum;
                 int tempIndex;
                 do {
                     cout << "4. View Account Info: " << endl << "Enter account number: " << endl;
                     cin >> number;
+                    cin.clear();
+                    cin.ignore();
                     for (int i = 0; i < accounts.size(); i++) {
                         if (accounts.at(i).GetNumber() == number) {
                             x = 1;
-                            tempNum = accounts.at(i).GetNumber();
                             tempIndex = i;
                             break;
                         }
